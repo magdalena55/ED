@@ -53,7 +53,7 @@ def insert_new_data_to_rent_price_table():
             bs2 = BeautifulSoup(page2.content, 'html.parser')
             floor = parse_floor(bs2.find('div', class_='css-1id7vsr-FeaturesList e1kihjfm0').get_text()).split(' ')[1]
 
-            cursor.execute('INSERT INTO mieszkania VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            cursor.execute('INSERT INTO apartment_rent_price VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
                            (location, price, rooms, area, floor, date[0], date[1], date[2]))
             connection.commit()
     connection.close()
