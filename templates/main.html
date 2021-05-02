@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<form action="{{ url_for('estimate_cost') }}" method="post">
+    Ilość m^2: <input type="text" name="area"><br>
+    Liczba pokojów: <input type="text" name="rooms"><br>
+
+    <select name="chosen_location">
+        {% for location in locations %}
+        Dzielnica: <option value="{{ location }}" >{{ location }}</option>
+        {% endfor %}
+    </select><br>
+
+    <input type="submit" value="Submit">
+</form>
+Przewidywana cena: {{ predicted }}
+
+</body>
+</html>
