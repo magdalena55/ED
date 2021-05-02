@@ -75,11 +75,30 @@ def plot_number_of_offers():
     ax.set_xlim(right=max(count_locations) + 2)  # adjust xlim to fit labels
     plt.show()
 
+#
+# plot_number_of_offers()
+# plot_avg_price_fo_each_loc()
 
-plot_number_of_offers()
-plot_avg_price_fo_each_loc()
 
 
-a = "xdsd31231"
-a=''.join(i for i in a if i.isdigit())
-print(a)
+
+connection = sqlite3.connect("database.db")
+cursor = connection.cursor()
+cursor.execute(
+        'SELECT  * FROM historical_price ORDER BY year, month')
+possible_locations = [' Stare Miasto', ' Krowodrza', ' Grzegórzki', ' Dębniki', ' Podgórze', ' Prądnik Biały',
+                          ' Prądnik Czerwony', ' Bronowice', ' Zwierzyniec', ' Czyżyny', ' Podgórze Duchackie',
+                          ' Łagiewniki-Borek Fałęcki', ' Bieżanów-Prokocim', ' Nowa Huta', ' Mistrzejowice',
+                          ' Bieńczyce', ' Swoszowice']
+
+date = []
+values1, values2, values3 = [], [], []
+for row in cursor.fetchall():
+    date.append(str(row[0])[2:]+ "/" +str(row[1]))
+    values1.append(row[2]), values2.append(row[3]), values3.append(row[4])
+
+
+plt.plot(date, values1)
+plt.plot(date, values2)
+plt.plot(date, values3)
+plt.show()

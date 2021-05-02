@@ -48,7 +48,6 @@ def insert_new_data_to_rent_price_table():
                 price = parse_price(offer.find('p', class_='css-pce4ym-Price eeuzmg10').get_text().strip())
                 rooms = parse_info(offer.find('div', class_='css-jg9o52-Flex e8aa8cc0').get_text().strip()).split(' ')[0]
                 area = parse_info(offer.find('div', class_='css-jg9o52-Flex e8aa8cc0').get_text().strip()).split(' ')[1]
-
                 area = ''.join(i for i in area if i.isdigit() or i==',')
 
                 link = offer.find('a')
