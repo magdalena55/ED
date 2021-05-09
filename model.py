@@ -16,7 +16,7 @@ def rent_price_model():
     cursor = connection.cursor()
     cursor.execute(
         'SELECT  price, location, rooms, area FROM apartment_rent_price WHERE year=? AND month=?',
-        (date[0], 4))
+        (date[0], date[1]))
 
     possible_locations = [' Stare Miasto', ' Krowodrza', ' Grzegórzki', ' Dębniki', ' Podgórze', ' Prądnik Biały',
                           ' Prądnik Czerwony', ' Bronowice', ' Zwierzyniec', ' Czyżyny', ' Podgórze Duchackie',
