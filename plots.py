@@ -36,7 +36,7 @@ def plot_avg_price_fo_each_loc():
     # Label with specially formatted floats
     ax.bar_label(hbars, fmt='%.2f')
     ax.set_xlim(right=max(avg_price) + 2)  # adjust xlim to fit labels
-    plt.show()
+    plt.savefig('static/images/plot_avg_price.png')
 
 
 ## 2
@@ -73,32 +73,33 @@ def plot_number_of_offers():
 
     ax.bar_label(hbars)
     ax.set_xlim(right=max(count_locations) + 2)  # adjust xlim to fit labels
-    plt.show()
+    plt.savefig('static/images/plot_number_of_offers.png', dpi=300)
 
 #
 # plot_number_of_offers()
 # plot_avg_price_fo_each_loc()
 
 
-
-
-connection = sqlite3.connect("database.db")
-cursor = connection.cursor()
-cursor.execute(
+def historical_plot():
+    connection = sqlite3.connect("database.db")
+    cursor = connection.cursor()
+    cursor.execute(
         'SELECT  * FROM historical_price ORDER BY year, month')
-possible_locations = [' Stare Miasto', ' Krowodrza', ' Grzegórzki', ' Dębniki', ' Podgórze', ' Prądnik Biały',
+    possible_locations = [' Stare Miasto', ' Krowodrza', ' Grzegórzki', ' Dębniki', ' Podgórze', ' Prądnik Biały',
                           ' Prądnik Czerwony', ' Bronowice', ' Zwierzyniec', ' Czyżyny', ' Podgórze Duchackie',
                           ' Łagiewniki-Borek Fałęcki', ' Bieżanów-Prokocim', ' Nowa Huta', ' Mistrzejowice',
                           ' Bieńczyce', ' Swoszowice']
+    date = []
+    values1, values2, values3 = [], [], []
+    for row in cursor.fetchall():
+        date.append(str(row[0])[2:] + "/" + str(row[1]))
+        values1.append(row[2]), values2.append(row[3]), values3.append(row[4])
+    fig, ax = plt.subplots()
+    ax.plot(date, values1)
+    ax.plot(date, values2)
+    ax.plot(date, values3)
 
-date = []
-values1, values2, values3 = [], [], []
-for row in cursor.fetchall():
-    date.append(str(row[0])[2:]+ "/" +str(row[1]))
-    values1.append(row[2]), values2.append(row[3]), values3.append(row[4])
+    plt.savefig('static/images/plot_historical.png', bbox_inches='tight')
 
 
-plt.plot(date, values1)
-plt.plot(date, values2)
-plt.plot(date, values3)
-plt.show()
+plot_avg_price_fo_each_loc()

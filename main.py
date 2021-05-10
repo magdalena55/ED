@@ -3,7 +3,7 @@ from requests import get
 
 # sciezka do ofert:
 for i in range(1, 120):
-    URL = 'https://gethome.pl/mieszkania/do-wynajecia/krakow/?page=i'
+    URL = 'https://gethome.pl/mieszkania/do-wynajecia/krakow/?page={}'.format(i)
 
 
     def parse_price(price):
