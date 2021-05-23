@@ -3,47 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-.center {
-  max-width: 450px;
-  margin: auto;
-  font-family:courier;
-}
-.small_mar {
-  margin-bottom: 10px;
-}
-.header {
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-}
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 
-select {
-  float: right;
-  clear: both;
-}
-
-input {
-  float: right;
-  clear: both;
-}
-
-</style>
 </head>
 <body style="margin:100px">
 
 <div class="center">
 <p class="header"> Oszacowanie ceny wynajmu mieszkania w Krakowie:</p>
 <form action="{{ url_for('estimate_cost') }}" method="post">
-    <div class="small_mar" > Ilość m^2: <input type="text" name="area" value="{{ request.form['area'] }}"></div>
-    <div class="small_mar" > Liczba pokoi: <input type="text" name="rooms" value="{{ request.form['rooms'] }}"></div>
+    <div class="small_mar" > Ilość m^2: <input class="to_right" type="text" name="area" value="{{ request.form['area'] }}"></div>
+    <div class="small_mar" > Liczba pokoi: <input class="to_right" type="text" name="rooms" value="{{ request.form['rooms'] }}"></div>
     <div class="small_mar" > Dzielnica:
-    <select name="chosen_location">
+    <div class="to_right"><select name="chosen_location">
         {% for location in locations %}
             <option value="{{ location }}" >{{ location }}</option>
         {% endfor %}
-    </select></div>
-    <input type="submit" value="Zatwierdź">
+    </select></div></div>
+    <input class="to_right" type="submit" value="Zatwierdź">
 </form>
 <br>
     <p class="header">{{ predicted }}</p>
@@ -58,16 +34,17 @@ input {
 
 
 
-
-<h1> Wybierz dzielnice by zobaczy szczegolowe statystyki</h1>
+<div class="center">
+<p class="header"> Szczegółowe statystyki dla wybranej dzielnicy <p>
 <form action="{{ url_for('dzielnica') }}" method="post">
     <select name="chosen_location">
         {% for location in locations %}
         Dzielnica: <option value="{{ location }}" >{{ location }}</option>
         {% endfor %}
-    </select><br>
-    <input type="submit" value="Submit">
+    </select>
+    <input class="to_right" type="submit" value="Pokaż statystyki">
 </form>
+</div>
 
 </body>
 </html>
