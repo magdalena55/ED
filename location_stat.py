@@ -49,13 +49,22 @@ def price_boxplot(location):
         prices.append(price[0])
 
     fig, ax = plt.subplots()
-
-
     df = pd.DataFrame(prices)
     df.boxplot(ax=ax)
     plt.title("Wykres pudełkowy ceny wynajmu")
-    plt.savefig('static/images/loc.png')
+    location = location[1:]
+    location = location.replace(' ', '_')
+    plt.savefig('static/images/loc_{}.png'.format(location))
 
 
+def make_all_boxplots():
+    possible_locations = ['Stare Miasto', 'Krowodrza', 'Grzegórzki', 'Dębniki', 'Podgórze', 'Prądnik Biały',
+                          'Prądnik Czerwony', 'Bronowice', 'Zwierzyniec', 'Czyżyny', 'Podgórze Duchackie',
+                          'Łagiewniki-Borek Fałęcki', 'Bieżanów-Prokocim', 'Nowa Huta', 'Mistrzejowice',
+                          'Bieńczyce', 'Swoszowice']
+    for loc in possible_locations:
+        price_boxplot(loc)
+        plt.clf()
 
 #print(price_boxplot("Bronowice"))
+make_all_boxplots()
