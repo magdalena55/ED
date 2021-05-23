@@ -57,8 +57,11 @@ def dzielnica():
     offers_count = stat.get_number(loc)
     avg = stat.get_avg_price(loc)
     location = loc.replace(' ', '_')
+    all_offers_count, all_avg_price = plot.get_data()
+    offers_ratio = round(offers_count/all_offers_count, 2)
+    all_avg_price = round(all_avg_price, 2)
 
-    return render_template('location.html', off=offers_count, avg=avg, boxplot='/static/images/loc_{}.png'.format(location), loc=loc)
+    return render_template('location.html', off=offers_count, avg=avg,  off_ratio=offers_ratio, all_avg=all_avg_price, boxplot='/static/images/loc_{}.png'.format(location), loc=loc)
 
 
 if __name__ == "__main__":

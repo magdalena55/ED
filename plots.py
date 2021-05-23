@@ -102,4 +102,20 @@ def historical_plot():
     plt.savefig('static/images/plot_historical.png', bbox_inches='tight')
 
 
-plot_avg_price_fo_each_loc()
+def get_data():
+    date = str(datetime.date(datetime.now()))
+    date = date.split("-")
+    connection = sqlite3.connect("database.db")
+    cursor = connection.cursor()
+    cursor.execute(
+        'SELECT  COUNT(*), AVG(price) FROM apartment_rent_price WHERE year=? AND month=?',
+        (date[0], date[1]))
+    possible_locations = [' Stare Miasto', ' Krowodrza', ' Grzegórzki', ' Dębniki', ' Podgórze', ' Prądnik Biały',
+                          ' Prądnik Czerwony', ' Bronowice', ' Zwierzyniec', ' Czyżyny', ' Podgórze Duchackie',
+                          ' Łagiewniki-Borek Fałęcki', ' Bieżanów-Prokocim', ' Nowa Huta', ' Mistrzejowice',
+                          ' Bieńczyce', ' Swoszowice']
+
+    for row in cursor.fetchall():
+        info = row
+    # zwraca liczbe ofert, srednia cene
+    return info[0], info[1]

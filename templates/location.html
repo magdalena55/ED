@@ -5,12 +5,12 @@
     <title>Title</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
-<body style="margin:100px">
+<body>
 
 <div class="center">
 <p class="header"> Dzielnica: {{ loc }} -  statystyki</p>
-Liczba obecnych ofert: {{ off }}<br>
-Średnia cena: {{ avg }}<br>
+    <p small_mar> Liczba obecnych ofert: {{ off }} ({{ off_ratio }} % wszystkich ofert w Krakowie )</p>
+    <p small_mar> Średnia cena: {{ avg }} (średnia cena w Krakowie: {{ all_avg }})</p>
 
 <img src={{ boxplot }}  height="500" width="500">
 </div>
