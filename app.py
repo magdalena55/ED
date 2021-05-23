@@ -34,10 +34,9 @@ def estimate_cost():
     if predicted < 100:
         predicted = 100
 
-    res = "Dane dotyczące mieszkania: {} m^2, dzielnica: {}".format(area, request.form['chosen_location'])
-    predicted = "Przewidywana cena: {}".format(predicted)
+    predicted = "Przewidywana cena: {}".format(*predicted)
 
-    return render_template('main.html', locations=locations, predicted=predicted, plot1='/static/images/plot_avg_price.png', plot2='/static/images/plot_number_of_offers.png', plot3='static/images/plot_historical.png', res=res)
+    return render_template('main.html', locations=locations, predicted=predicted, plot1='/static/images/plot_avg_price.png', plot2='/static/images/plot_number_of_offers.png', plot3='static/images/plot_historical.png')
 
 
 @app.route('/dzielnica', methods=['POST'])
