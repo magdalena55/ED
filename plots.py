@@ -32,10 +32,11 @@ def plot_avg_price_fo_each_loc():
     ax.set_yticklabels(locations)
     ax.invert_yaxis()  # labels read top-to-bottom
     ax.set_xlabel('Avg price for m^2')
-    ax.set_title('Avg price for m^2 for each location')
+    #ax.set_title('Avg price for m^2 for each location')
     # Label with specially formatted floats
     ax.bar_label(hbars, fmt='%.2f')
     ax.set_xlim(right=max(avg_price) + 2)  # adjust xlim to fit labels
+    plt.tight_layout()
     plt.savefig('static/images/plot_avg_price.png')
 
 
@@ -69,10 +70,11 @@ def plot_number_of_offers():
     ax.set_yticklabels(locations)
     ax.invert_yaxis()  # labels read top-to-bottom
     ax.set_xlabel('Number of offers')
-    ax.set_title('Number of offers for each location')
+    #ax.set_title('Number of offers for each location')
 
     ax.bar_label(hbars)
     ax.set_xlim(right=max(count_locations) + 2)  # adjust xlim to fit labels
+    plt.tight_layout()
     plt.savefig('static/images/plot_number_of_offers.png', dpi=300)
 
 #
@@ -92,13 +94,14 @@ def historical_plot():
     date = []
     values1, values2, values3 = [], [], []
     for row in cursor.fetchall():
-        date.append(str(row[0])[2:] + "/" + str(row[1]))
+        date.append(str(row[0]) + "/" + str(row[1]))
         values1.append(row[2]), values2.append(row[3]), values3.append(row[4])
     fig, ax = plt.subplots()
     ax.plot(date, values1)
     ax.plot(date, values2)
     ax.plot(date, values3)
-
+    plt.xticks(np.arange(0, len(date) + 1, 7))
+    plt.tight_layout()
     plt.savefig('static/images/plot_historical.png', bbox_inches='tight')
 
 
@@ -119,3 +122,8 @@ def get_data():
         info = row
     # zwraca liczbe ofert, srednia cene
     return info[0], info[1]
+
+
+plot_avg_price_fo_each_loc()
+plot_number_of_offers()
+historical_plot()
