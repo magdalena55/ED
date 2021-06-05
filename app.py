@@ -40,7 +40,7 @@ def estimate_cost():
     predicted = model.predict(data)
     if predicted < 100:
         predicted = 100
-    answer = "Przewidywana cena: {}".format(round(*predicted, 2))
+    answer = "Przewidywana cena: {} PLN".format(round(*predicted, 2))
 
     return render_template('main.html', locations=locations, predicted=answer, plot1='/static/images/plot_avg_price.png', plot2='/static/images/plot_number_of_offers.png', plot3='static/images/plot_historical.png')
 
@@ -51,12 +51,16 @@ def dzielnica():
     loc = loc[1:]
     offers_count = stat.get_number(loc)
     avg = stat.get_avg_price(loc)
+    avg_ratio = stat.get_avg_price_ratio(loc)
+
     location = loc.replace(' ', '_')
-    all_offers_count, all_avg_price = plot.get_data()
+    all_offers_count, all_avg_price, all_avg_price_ratio = plot.get_data()
     offers_ratio = 100*round(offers_count/all_offers_count, 2)
     all_avg_price = round(all_avg_price, 2)
+    all_avg_price_ratio = round(all_avg_price_ratio, 2)
 
-    return render_template('location.html', off=offers_count, avg=avg,  off_ratio=offers_ratio, all_avg=all_avg_price, boxplot='/static/images/loc_{}.png'.format(location), loc=loc)
+
+    return render_template('location.html', off=offers_count, avg=avg,  off_ratio=offers_ratio, all_avg=all_avg_price, boxplot='/static/images/loc_{}.png'.format(location), loc=loc, avg_ratio=avg_ratio,all_avg_price_ratio=all_avg_price_ratio, price_plot='/static/images/loc_price__{}.png'.format(location))
 
 
 if __name__ == "__main__":

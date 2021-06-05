@@ -111,7 +111,7 @@ def get_data():
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT  COUNT(*), AVG(price) FROM apartment_rent_price WHERE year=? AND month=?',
+        'SELECT  COUNT(*), AVG(price), AVG(price/area) FROM apartment_rent_price WHERE year=? AND month=?',
         (date[0], date[1]))
     possible_locations = [' Stare Miasto', ' Krowodrza', ' Grzegórzki', ' Dębniki', ' Podgórze', ' Prądnik Biały',
                           ' Prądnik Czerwony', ' Bronowice', ' Zwierzyniec', ' Czyżyny', ' Podgórze Duchackie',
@@ -121,8 +121,42 @@ def get_data():
     for row in cursor.fetchall():
         info = row
     # zwraca liczbe ofert, srednia cene
-    return info[0], info[1]
+    return info[0], info[1], info[2]
 
+
+def plot_current_price(location):
+    location = " " + location
+    connection = sqlite3.connect("database.db")
+    cursor = connection.cursor()
+    cursor.execute(
+        'SELECT AVG(price/area), year, month FROM apartment_rent_price WHERE location=? GROUP BY year, month ',
+        (location,))
+
+    price, date = [], []
+    for row in cursor.fetchall():
+        price.append(row[0])
+        date.append(str(row[1]) + '/' +str(row[2]))
+
+    fig, ax = plt.subplots()
+    ax.plot(date, price)
+    plt.title("Średnia cena za m^2 na przestrzeni czasu")
+    ax.set_xlabel("Data")
+    ax.set_ylabel("Średnia Cena za m^2 (PLN) ")
+    plt.tight_layout()
+    location = location.replace(' ', '_')
+    plt.savefig('static/images/loc_price_{}.png'.format(location))
+
+
+def make_all_plot_price():
+    possible_locations = ['Stare Miasto', 'Krowodrza', 'Grzegórzki', 'Dębniki', 'Podgórze', 'Prądnik Biały',
+                          'Prądnik Czerwony', 'Bronowice', 'Zwierzyniec', 'Czyżyny', 'Podgórze Duchackie',
+                          'Łagiewniki-Borek Fałęcki', 'Bieżanów-Prokocim', 'Nowa Huta', 'Mistrzejowice',
+                          'Bieńczyce', 'Swoszowice']
+    for loc in possible_locations:
+        plot_current_price(loc)
+        plt.clf()
+
+make_all_plot_price()
 
 plot_avg_price_fo_each_loc()
 plot_number_of_offers()

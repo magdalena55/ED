@@ -3,16 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
 
-<div class="center">
-<p class="header"> Dzielnica: {{ loc }} -  statystyki</p>
-    <p small_mar> Liczba obecnych ofert: {{ off }} ({{ off_ratio }} % wszystkich ofert w Krakowie )</p>
-    <p small_mar> Średnia cena: {{ avg }} (średnia cena w Krakowie: {{ all_avg }})</p>
+<div id="container">
+    <div id="header">
+        Statystyki dzielnicy: {{ loc }}
+    </div>
 
-<img src={{ boxplot }}  height="500" width="500">
+    <div id="content">
+
+        <table>
+            <tr>
+                <td class="attribute">
+                    Liczba obecnych ofert:
+                </td>
+                <td class="data">
+                    {{ off }}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="attribute">
+                    Procent wszystkich ofert w Krakowie:
+                </td>
+                <td class="data">
+                    {{ off_ratio }}%
+                </td>
+            </tr>
+
+            <tr>
+                <td class="attribute">
+                    Średnia cena:
+                </td>
+                <td class="data">
+                    {{ avg }} PLN
+                </td>
+            </tr>
+
+            <tr>
+                <td class="attribute">
+                    Średnia cena w Krakowie:
+                </td>
+                <td class="data">
+                    {{ all_avg }} PLN
+                </td>
+            </tr>
+                        <tr>
+                <td class="attribute">
+                    Średnia cena za m^2:
+                </td>
+                <td class="data">
+                    {{ avg_ratio }} PLN
+                </td>
+            </tr>
+                        <tr>
+                <td class="attribute">
+                    Średnia cena w Krakowie za m^2:
+                </td>
+                <td class="data">
+                    {{ all_avg_price_ratio }} PLN
+                </td>
+            </tr>
+        </table>
+
+        <div class="row">
+            <img src={{ boxplot }}>
+        </div>
+        <div class="row">
+            <img src={{ price_plot }}>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>

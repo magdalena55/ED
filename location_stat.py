@@ -34,6 +34,19 @@ def get_avg_price(location):
     return round(avg_price, 2)
 
 
+def get_avg_price_ratio(location):
+    date = str(datetime.date(datetime.now()))
+    date = date.split("-")
+    connection = sqlite3.connect("database.db")
+    cursor = connection.cursor()
+    location = " " + location
+    cursor.execute(
+        'SELECT  AVG(price/area) FROM apartment_rent_price WHERE year=? AND month=? AND location=?',
+        (date[0], date[1], location))
+    avg_price = cursor.fetchone()[0]
+
+    return round(avg_price, 2)
+
 def price_boxplot(location):
     date = str(datetime.date(datetime.now()))
     date = date.split("-")

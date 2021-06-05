@@ -3,47 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='main.css') }}">
 
 </head>
-<body style="margin:100px">
+<body>
 
-<div class="center">
-<p class="header"> Oszacowanie ceny wynajmu mieszkania w Krakowie:</p>
-<form action="{{ url_for('estimate_cost') }}" method="post">
-    <div class="small_mar" > Ilość m^2: <input class="to_right" type="text" name="area" value="{{ request.form['area'] }}"></div>
-    <div class="small_mar" > Liczba pokoi: <input class="to_right" type="text" name="rooms" value="{{ request.form['rooms'] }}"></div>
-    <div class="small_mar" > Dzielnica:
-    <div class="to_right"><select name="chosen_location">
-        {% for location in locations %}
-            <option value="{{ location }}" >{{ location }}</option>
-        {% endfor %}
-    </select></div></div>
-    <input class="to_right" type="submit" value="Zatwierdź">
-</form>
-<br>
-    <p class="header">{{ predicted }}</p>
-</div>
+<div id="container">
 
-<h1> Średnia cena za m^2 w zależności od dzielnicy</h1>
-<img src={{plot1}}  height="500" width="500">
-<h1> Wykres przedstawiający liczbę ofert dla każdej z dzielnic</h1>
-<img src={{plot2}}  height="500" width="500">
-<h1> Porównanie aktualnej średniej ceny wynajmu na przestrzeni miesięcy w Krakowie z podziałem na 3 zakresy w zależności od powierzchni metrażu (0-38, 38-60, 60-90) m^2</h1>
-<img src={{plot3}}  height="500" width="500">
+    <div id="header">
+        Eksploracja danych - M. Kędra, M. Rusek
+    </div>
 
+    <div id="content">
 
+        <div class="row">
+            <div class="title">
+                Oszacuj cenę wynajmu mieszkania w Krakowie:
+            </div>
 
-<div class="center">
-<p class="header"> Szczegółowe statystyki dla wybranej dzielnicy <p>
-<form action="{{ url_for('dzielnica') }}" method="post">
-    <select name="chosen_location">
-        {% for location in locations %}
-        Dzielnica: <option value="{{ location }}" >{{ location }}</option>
-        {% endfor %}
-    </select>
-    <input class="to_right" type="submit" value="Pokaż statystyki">
-</form>
+            <table>
+                <form action="{{ url_for('estimate_cost') }}" method="post">
+
+                    <tr>
+                        <td class="attribute">
+                            Liczba m^2:
+                        </td>
+                        <td>
+                            <input type="text" name="area" value="{{ request.form['area'] }}">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="attribute">
+                            Liczba pokoi:
+                        </td>
+                        <td>
+                            <input type="text" name="rooms" value="{{ request.form['rooms'] }}">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="attribute">
+                            Dzielnica Krakowa:
+                        </td>
+                        <td>
+                            <select name="chosen_location">
+                                {% for location in locations %}
+                                    <option value="{{ location }}" >
+                                        {{ location }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input type="submit" value="Oszacuj">
+                        </td>
+                    </tr>
+                </form>
+
+                 <tr>
+                     <td colspan="2"> {{ predicted }}</td>
+                 </tr>
+            </table>
+        </div>
+
+        <div class="row">
+            <div class="title">
+                Średnia cena za m^2 w zależności od dzielnicy:
+            </div>
+
+            <img src={{plot1}}>
+        </div>
+
+        <div class="row">
+            <div class="title">
+                Wykres przedstawiający liczbę ofert dla każdej z dzielnic:
+            </div>
+
+            <img src={{plot2}}>
+        </div>
+
+        <div class="row">
+            <div class="title">
+                Porównanie aktualnej średniej ceny wynajmu na przestrzeni miesięcy w Krakowie z podziałem na 3 zakresy w zależności od powierzchni metrażu (0-38, 38-60, 60-90) m^2
+            </div>
+
+            <img src={{plot3}}>
+        </div>
+
+        <div class="row">
+            <div class="title">
+                Szczegółowe statystyki dla wybranej dzielnicy:
+            </div>
+            <table>
+                <form action="{{ url_for('dzielnica') }}" method="post">
+
+                    <tr>
+                        <td>
+                            Dzielnica:
+                        </td>
+                        <td>
+                            <select name="chosen_location">
+                                {% for location in locations %}
+                                    <option value="{{ location }}" >
+                                        {{ location }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input type="submit" value="Pokaż statystyki">
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </div>
+
+    </div>
+
+    <div id="footer">
+
+    </div>
+
 </div>
 
 </body>
