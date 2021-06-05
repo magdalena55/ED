@@ -32,15 +32,12 @@ def plot_avg_price_fo_each_loc():
     ax.set_yticklabels(locations)
     ax.invert_yaxis()  # labels read top-to-bottom
     ax.set_xlabel('Avg price for m^2')
-    #ax.set_title('Avg price for m^2 for each location')
     # Label with specially formatted floats
     ax.bar_label(hbars, fmt='%.2f')
     ax.set_xlim(right=max(avg_price) + 2)  # adjust xlim to fit labels
     plt.tight_layout()
     plt.savefig('static/images/plot_avg_price.png')
 
-
-## 2
 
 def plot_number_of_offers():
     date = str(datetime.date(datetime.now()))
@@ -68,29 +65,18 @@ def plot_number_of_offers():
     hbars = ax.barh(y_pos, performance, xerr=error, align='center')
     ax.set_yticks(y_pos)
     ax.set_yticklabels(locations)
-    ax.invert_yaxis()  # labels read top-to-bottom
+    ax.invert_yaxis()
     ax.set_xlabel('Number of offers')
-    #ax.set_title('Number of offers for each location')
-
     ax.bar_label(hbars)
-    ax.set_xlim(right=max(count_locations) + 2)  # adjust xlim to fit labels
+    ax.set_xlim(right=max(count_locations) + 2)
     plt.tight_layout()
     plt.savefig('static/images/plot_number_of_offers.png', dpi=300)
-
-#
-# plot_number_of_offers()
-# plot_avg_price_fo_each_loc()
 
 
 def historical_plot():
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
-    cursor.execute(
-        'SELECT  * FROM historical_price ORDER BY year, month')
-    possible_locations = [' Stare Miasto', ' Krowodrza', ' Grzegórzki', ' Dębniki', ' Podgórze', ' Prądnik Biały',
-                          ' Prądnik Czerwony', ' Bronowice', ' Zwierzyniec', ' Czyżyny', ' Podgórze Duchackie',
-                          ' Łagiewniki-Borek Fałęcki', ' Bieżanów-Prokocim', ' Nowa Huta', ' Mistrzejowice',
-                          ' Bieńczyce', ' Swoszowice']
+    cursor.execute('SELECT  * FROM historical_price ORDER BY year, month')
     date = []
     values1, values2, values3 = [], [], []
     for row in cursor.fetchall():
@@ -110,14 +96,8 @@ def get_data():
     date = date.split("-")
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
-    cursor.execute(
-        'SELECT  price, area FROM apartment_rent_price WHERE year=? AND month=?',
+    cursor.execute('SELECT  price, area FROM apartment_rent_price WHERE year=? AND month=?',
         (date[0], date[1]))
-    possible_locations = [' Stare Miasto', ' Krowodrza', ' Grzegórzki', ' Dębniki', ' Podgórze', ' Prądnik Biały',
-                          ' Prądnik Czerwony', ' Bronowice', ' Zwierzyniec', ' Czyżyny', ' Podgórze Duchackie',
-                          ' Łagiewniki-Borek Fałęcki', ' Bieżanów-Prokocim', ' Nowa Huta', ' Mistrzejowice',
-                          ' Bieńczyce', ' Swoszowice']
-
     price, area = [], []
     for row in cursor.fetchall():
         price.append(row[0])
@@ -126,8 +106,7 @@ def get_data():
     area = np.asarray(area)
     ratio = price/area
 
-    # zwraca liczbe ofert, srednia cene
-    return area.shape[0], np.mean(ratio) , round(np.median(ratio),2), round(np.quantile(ratio, 0.25),2), round(np.quantile(ratio, 0.75),2)
+    return area.shape[0], np.mean(ratio), round(np.median(ratio),2), round(np.quantile(ratio, 0.25),2), round(np.quantile(ratio, 0.75),2)
 
 
 def plot_current_price(location):
@@ -198,6 +177,7 @@ def plot_room_info_all():
     plt.ylabel("Liczba pokojów")
     plt.tight_layout()
     plt.savefig('static/images/rooms_info.png')
+
 
 plot_room_info_all()
 make_all_plot_price()

@@ -3,8 +3,6 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
-import operator
 
 
 def get_number_of_offers(location):
@@ -52,7 +50,6 @@ def get_location_stats(location):
     area = np.asarray(area)
     ratio = price / area
 
-    # zwraca liczbe ofert, srednia cene
     return round(np.mean(ratio),2), round(np.median(ratio), 2), round(np.quantile(ratio, 0.25), 2), round(np.quantile(ratio, 0.75))
 
 
@@ -62,8 +59,7 @@ def get_room_info(location):
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     location = " " + location
-    cursor.execute(
-        'SELECT  rooms FROM apartment_rent_price WHERE year=? AND month=? AND location=?',
+    cursor.execute('SELECT  rooms FROM apartment_rent_price WHERE year=? AND month=? AND location=?',
         (date[0], date[1], location))
 
     rooms = []
@@ -137,5 +133,5 @@ def make_all_plots():
         plot_room_info(loc)
         plt.clf()
 
-#print(price_boxplot("Bronowice"))
+
 make_all_plots()
