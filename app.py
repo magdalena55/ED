@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     model, locations, off = mod.rent_price_model()
-    return render_template('main.html', locations=locations, plot1='/static/images/plot_avg_price.png', plot2='/static/images/plot_number_of_offers.png', plot3='static/images/plot_historical.png')
+    return render_template('main.html', locations=locations, plot1='/static/images/plot_avg_price.png', plot2='/static/images/plot_number_of_offers.png', plot3='static/images/plot_historical.png', plot4='static/images/rooms_info.png')
 
 
 @app.route('/estimate_cost', methods=['POST'])
@@ -29,12 +29,11 @@ def estimate_cost():
         return render_template('main.html', locations=locations, predicted=answer,
                                plot1='/static/images/plot_avg_price.png',
                                plot2='/static/images/plot_number_of_offers.png',
-                               plot3='static/images/plot_historical.png')
+                               plot3='static/images/plot_historical.png',
+                               plot4='static/images/rooms_info.png')
     if area < 0 or rooms < 0:
         answer = "Podane dane nie mogą być ujemne"
-
-        return render_template('main.html', locations=locations, predicted=answer,
-                               plot1='/static/images/plot_avg_price.png', plot2='/static/images/plot_number_of_offers.png', plot3='static/images/plot_historical.png')
+        return render_template('main.html', locations=locations, predicted=answer, plot1='/static/images/plot_avg_price.png', plot2='/static/images/plot_number_of_offers.png', plot3='static/images/plot_historical.png', plot4='static/images/rooms_info.png')
 
     data = np.asarray([rooms, area, *loc]).reshape(-1, 19)
     predicted = model.predict(data)
@@ -50,7 +49,6 @@ def dzielnica():
     loc = request.form['chosen_location']
     loc = loc[1:]
     offers_count = stat.get_number_of_offers(loc)
-    #avg = stat.get_avg_price(loc)
     avg_ratio, med, q1, q3 = stat.get_location_stats(loc)
 
     location = loc.replace(' ', '_')
@@ -58,8 +56,7 @@ def dzielnica():
     offers_ratio = 100*round(offers_count/all_offers_count, 2)
     all_avg_price_ratio = round(all_avg_price_ratio, 2)
 
-
-    return render_template('location.html', off=offers_count, off_ratio=offers_ratio, boxplot='/static/images/loc_{}.png'.format(location), loc=loc, avg_ratio=avg_ratio,all_avg_price_ratio=all_avg_price_ratio, price_plot='/static/images/loc_price__{}.png'.format(location),all_med=all_med, all_q1=all_q1, all_q3=all_q3, med=med, q1=q1, q3=q3)
+    return render_template('location.html', off=offers_count, off_ratio=offers_ratio, boxplot='/static/images/loc_{}.png'.format(location), room_plot='/static/images/loc_rooms_{}.png'.format(location), loc=loc, avg_ratio=avg_ratio,all_avg_price_ratio=all_avg_price_ratio, price_plot='/static/images/loc_price__{}.png'.format(location),all_med=all_med, all_q1=all_q1, all_q3=all_q3, med=med, q1=q1, q3=q3)
 
 
 if __name__ == "__main__":

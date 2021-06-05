@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import operator
 
 
 def get_number_of_offers(location):
@@ -55,6 +56,53 @@ def get_location_stats(location):
     return round(np.mean(ratio),2), round(np.median(ratio), 2), round(np.quantile(ratio, 0.25), 2), round(np.quantile(ratio, 0.75))
 
 
+def get_room_info(location):
+    date = str(datetime.date(datetime.now()))
+    date = date.split("-")
+    connection = sqlite3.connect("database.db")
+    cursor = connection.cursor()
+    location = " " + location
+    cursor.execute(
+        'SELECT  rooms FROM apartment_rent_price WHERE year=? AND month=? AND location=?',
+        (date[0], date[1], location))
+
+    rooms = []
+    for row in cursor.fetchall():
+        if type(row[0]) == str:
+            rooms.append(int(row[0][-1]))
+        else:
+            rooms.append(row[0])
+    frequency = {}
+    options = [1, 2, 3, 4, 5, "6+"]
+    for i in options:
+        frequency[i] = 0
+    for item in rooms:
+        if item < 6:
+            frequency[item] += 1
+        else:
+            frequency["6+"] += 1
+    return frequency
+
+
+def plot_room_info(location):
+    frequency = get_room_info(location)
+    y_pos = np.arange(len(frequency.keys()))
+    performance = frequency.values()
+    error = np.random.rand(len(frequency.values()))
+    fig, ax = plt.subplots()
+    hbars = ax.barh(y_pos, performance, xerr=error, align='center')
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(frequency.keys())
+    ax.invert_yaxis()
+    ax.set_xlabel('Liczba danych mieszkań')
+    ax.bar_label(hbars, fmt='%.2f')
+    ax.set_xlim(right=max(frequency.values()) + 2)
+    ax.set_title('Liczba mieszkań z daną liczbą pokojów')
+    plt.ylabel("Liczba pokojów")
+    plt.tight_layout()
+    location = location.replace(' ', '_')
+    plt.savefig('static/images/loc_rooms_{}.png'.format(location))
+
 
 def price_boxplot(location):
     date = str(datetime.date(datetime.now()))
@@ -79,14 +127,15 @@ def price_boxplot(location):
     plt.savefig('static/images/loc_{}.png'.format(location))
 
 
-def make_all_boxplots():
+def make_all_plots():
     possible_locations = ['Stare Miasto', 'Krowodrza', 'Grzegórzki', 'Dębniki', 'Podgórze', 'Prądnik Biały',
                           'Prądnik Czerwony', 'Bronowice', 'Zwierzyniec', 'Czyżyny', 'Podgórze Duchackie',
                           'Łagiewniki-Borek Fałęcki', 'Bieżanów-Prokocim', 'Nowa Huta', 'Mistrzejowice',
                           'Bieńczyce', 'Swoszowice']
     for loc in possible_locations:
         price_boxplot(loc)
+        plot_room_info(loc)
         plt.clf()
 
 #print(price_boxplot("Bronowice"))
-make_all_boxplots()
+make_all_plots()

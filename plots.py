@@ -162,8 +162,45 @@ def make_all_plot_price():
         plot_current_price(loc)
         plt.clf()
 
-make_all_plot_price()
 
+def plot_room_info_all():
+    date = str(datetime.date(datetime.now()))
+    date = date.split("-")
+    connection = sqlite3.connect("database.db")
+    cursor = connection.cursor()
+    cursor.execute('SELECT  rooms FROM apartment_rent_price WHERE year=? AND month=? ', (date[0], date[1]))
+    rooms = []
+    for row in cursor.fetchall():
+        if type(row[0]) == str:
+            rooms.append(int(row[0][-1]))
+        else:
+            rooms.append(row[0])
+    frequency = {}
+    options = [1, 2, 3, 4, 5, "6+"]
+    for i in options:
+        frequency[i] = 0
+    for item in rooms:
+        if item < 6:
+            frequency[item] += 1
+        else:
+            frequency["6+"] += 1
+    y_pos = np.arange(len(frequency.keys()))
+    performance = frequency.values()
+    error = np.random.rand(len(frequency.values()))
+    fig, ax = plt.subplots()
+    hbars = ax.barh(y_pos, performance, xerr=error, align='center')
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(frequency.keys())
+    ax.invert_yaxis()
+    ax.set_xlabel('Liczba danych mieszkań')
+    ax.bar_label(hbars, fmt='%.2f')
+    ax.set_xlim(right=max(frequency.values()) + 2)
+    plt.ylabel("Liczba pokojów")
+    plt.tight_layout()
+    plt.savefig('static/images/rooms_info.png')
+
+plot_room_info_all()
+make_all_plot_price()
 plot_avg_price_fo_each_loc()
 plot_number_of_offers()
 historical_plot()
