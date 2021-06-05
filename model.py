@@ -27,6 +27,8 @@ def rent_price_model():
         if row[1] in possible_locations:
             row = list(row)
             row[3] = float(str(row[3]).replace(",", "."))
+            if type(row[2]) == str:
+                row[2] = 2
             data.append(row)
 
     df = pd.DataFrame(data, columns=['price', 'location', 'rooms', 'area'])

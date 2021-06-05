@@ -1,4 +1,3 @@
-
 body
 {
   background-color: #a8a396;
@@ -30,6 +29,7 @@ body
 
 table
 {
+  font-family:courier;
   padding: 15px;
   margin-left: auto;
   margin-right: auto;

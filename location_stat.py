@@ -6,7 +6,7 @@ import pandas as pd
 import seaborn as sns
 
 
-def get_number(location):
+def get_number_of_offers(location):
     date = str(datetime.date(datetime.now()))
     date = date.split("-")
     connection = sqlite3.connect("database.db")
@@ -34,18 +34,27 @@ def get_avg_price(location):
     return round(avg_price, 2)
 
 
-def get_avg_price_ratio(location):
+def get_location_stats(location):
     date = str(datetime.date(datetime.now()))
     date = date.split("-")
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     location = " " + location
     cursor.execute(
-        'SELECT  AVG(price/area) FROM apartment_rent_price WHERE year=? AND month=? AND location=?',
+        'SELECT  price, area FROM apartment_rent_price WHERE year=? AND month=? AND location=?',
         (date[0], date[1], location))
-    avg_price = cursor.fetchone()[0]
+    price, area = [], []
+    for row in cursor.fetchall():
+        price.append(row[0])
+        area.append(float(str(row[1]).replace(",", ".")))
+    price = np.asarray(price)
+    area = np.asarray(area)
+    ratio = price / area
 
-    return round(avg_price, 2)
+    # zwraca liczbe ofert, srednia cene
+    return round(np.mean(ratio),2), round(np.median(ratio), 2), round(np.quantile(ratio, 0.25), 2), round(np.quantile(ratio, 0.75))
+
+
 
 def price_boxplot(location):
     date = str(datetime.date(datetime.now()))

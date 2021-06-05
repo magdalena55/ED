@@ -32,40 +32,54 @@
                     {{ off_ratio }}%
                 </td>
             </tr>
+        </table>
 
-            <tr>
-                <td class="attribute">
-                    Średnia cena:
-                </td>
+        <div class="title">
+                Porównanie ceny za metr kwadratowy dla dzielnicy w stosunku do Krakowa
+        </div>
+        <table>
+              <tr>
+                  <th></th>
+                  <th> Q1 </th>
+                  <th> Średnia </th>
+                  <th> Mediana </th>
+                  <th> Q4 </th>
+                </tr>
+                <tr>
+                    <td class="attribute">
+                             {{ loc }}
+                    </td>
                 <td class="data">
-                    {{ avg }} PLN
-                </td>
-            </tr>
-
-            <tr>
-                <td class="attribute">
-                    Średnia cena w Krakowie:
-                </td>
-                <td class="data">
-                    {{ all_avg }} PLN
-                </td>
-            </tr>
-                        <tr>
-                <td class="attribute">
-                    Średnia cena za m^2:
+                    {{ q1 }} PLN
                 </td>
                 <td class="data">
                     {{ avg_ratio }} PLN
                 </td>
+                <td class="data">
+                    {{ med }} PLN
+                </td>
+                <td class="data">
+                    {{ q3 }} PLN
+                </td>
             </tr>
-                        <tr>
+            <tr>
                 <td class="attribute">
-                    Średnia cena w Krakowie za m^2:
+                    Kraków
+                </td>
+                <td class="data">
+                    {{ all_q1 }} PLN
                 </td>
                 <td class="data">
                     {{ all_avg_price_ratio }} PLN
                 </td>
+                <td class="data">
+                    {{ all_med }}  PLN
+                </td>
+                <td class="data">
+                    {{ all_q3 }} PLN
+                </td>
             </tr>
+
         </table>
 
         <div class="row">

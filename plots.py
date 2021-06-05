@@ -111,17 +111,23 @@ def get_data():
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT  COUNT(*), AVG(price), AVG(price/area) FROM apartment_rent_price WHERE year=? AND month=?',
+        'SELECT  price, area FROM apartment_rent_price WHERE year=? AND month=?',
         (date[0], date[1]))
     possible_locations = [' Stare Miasto', ' Krowodrza', ' Grzegórzki', ' Dębniki', ' Podgórze', ' Prądnik Biały',
                           ' Prądnik Czerwony', ' Bronowice', ' Zwierzyniec', ' Czyżyny', ' Podgórze Duchackie',
                           ' Łagiewniki-Borek Fałęcki', ' Bieżanów-Prokocim', ' Nowa Huta', ' Mistrzejowice',
                           ' Bieńczyce', ' Swoszowice']
 
+    price, area = [], []
     for row in cursor.fetchall():
-        info = row
+        price.append(row[0])
+        area.append(float(str(row[1]).replace(",",".")))
+    price = np.asarray(price)
+    area = np.asarray(area)
+    ratio = price/area
+
     # zwraca liczbe ofert, srednia cene
-    return info[0], info[1], info[2]
+    return area.shape[0], np.mean(ratio) , round(np.median(ratio),2), round(np.quantile(ratio, 0.25),2), round(np.quantile(ratio, 0.75),2)
 
 
 def plot_current_price(location):

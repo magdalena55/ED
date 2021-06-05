@@ -53,4 +53,4 @@ def add_row_to_historical_data(month, year):
 
 if __name__ == "__main__":
     #generate_historical_data_table()
-    add_row_to_historical_data(4, 2021)
+    add_row_to_historical_data(6, 2021)
