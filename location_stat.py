@@ -69,14 +69,15 @@ def get_room_info(location):
         else:
             rooms.append(row[0])
     frequency = {}
-    options = [1, 2, 3, 4, 5, "6+"]
+    #options = [1, 2, 3, 4, "5+"]
+    options = ["5+", 4, 3, 2, 1]
     for i in options:
         frequency[i] = 0
     for item in rooms:
-        if item < 6:
+        if item < 5:
             frequency[item] += 1
         else:
-            frequency["6+"] += 1
+            frequency["5+"] += 1
     return frequency
 
 
@@ -86,15 +87,15 @@ def plot_room_info(location):
     performance = frequency.values()
     error = np.random.rand(len(frequency.values()))
     fig, ax = plt.subplots()
-    hbars = ax.barh(y_pos, performance, xerr=error, align='center')
+    hbars = ax.barh(y_pos, performance, xerr=error, align='center', color='orange')
     ax.set_yticks(y_pos)
     ax.set_yticklabels(frequency.keys())
     ax.invert_yaxis()
-    ax.set_xlabel('Liczba danych mieszkań')
-    ax.bar_label(hbars, fmt='%.2f')
-    ax.set_xlim(right=max(frequency.values()) + 2)
-    ax.set_title('Liczba mieszkań z daną liczbą pokojów')
-    plt.ylabel("Liczba pokojów")
+    ax.set_xlabel('Liczba ofert')
+    ax.bar_label(hbars, fmt='%.0f')
+    ax.set_xlim(right=max(frequency.values()) + 30)
+    ax.set_title('Liczba ofert wynajmu mieszkania w zależności od liczby pokoi')
+    plt.ylabel("Liczba pokoi")
     plt.tight_layout()
     location = location.replace(' ', '_')
     plt.savefig('static/images/loc_rooms_{}.png'.format(location))
@@ -117,7 +118,10 @@ def price_boxplot(location):
     fig, ax = plt.subplots()
     df = pd.DataFrame(prices)
     df.boxplot(ax=ax)
-    plt.title("Wykres pudełkowy ceny wynajmu")
+    ax.set_xticks([])
+    plt.title('Wykres pudełkowy ceny wynajmu mieszkania dla dzielnicy {}'.format(location))
+    plt.ylabel('Cena (PLN)')
+    plt.xlabel(location)
     location = location[1:]
     location = location.replace(' ', '_')
     plt.savefig('static/images/loc_{}.png'.format(location))

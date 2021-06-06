@@ -9,22 +9,26 @@ body
   margin-left: auto;
   margin-right: auto;
   background-color: #ded9cc;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 #header
 {
   color: #4a4a40;
-  font-size: 40px;
+  font-size: 50px;
   letter-spacing: 4px;
   font-weight: 900;
-  padding: 30px;
+  padding: 20px;
   text-align: center;
+  background-color: #8a6b7f;
 }
 
 #footer
 {
-  padding: 50px;
+  padding: 10px;
+  margin-top: 100px;
+  text-align: center;
+  background-color: #8a6b7f;
 }
 
 table
@@ -53,22 +57,59 @@ img
 {
   height: 500px;
   width: 500px;
-  margin-left: 330px;
-  margin-right: 330px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  float: left;
+  padding-left: 23px;
+  padding-right: 23px;
 }
 
 .row
 {
-  padding: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto;
+  clear: both;
 }
 
 .title
 {
-  font-size: 30px;
+  font-size: 35px;
   font-weight: bold;
-  padding: 15px;
+  padding: 25px;
   text-align: center;
-  color: #068a06;
+  background-color: #ccbec7;
+  margin-bottom: 20px;
+}
+
+.project
+{
+  font-size: 42px;
+  background-color: #8a6b7f;
+  font-weight: bold;
+  text-align: center;
+  color: #4a4a40;
+  padding: 10px;
+}
+
+#box
+{
+  margin-left: 300px;
+}
+
+input
+{
+  height: 30px;
+  border-radius: 7px;
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+select
+{
+  width: 200px;
+  height: 30px;
+  text-align: center;
+  border-radius: 7px;
 }

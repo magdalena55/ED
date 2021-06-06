@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_avg_price_fo_each_loc():
+def plot_avg_price_for_each_loc():
     date = str(datetime.date(datetime.now()))
     date = date.split("-")
     connection = sqlite3.connect("database.db")
@@ -30,11 +30,12 @@ def plot_avg_price_fo_each_loc():
     hbars = ax.barh(y_pos, performance, xerr=error, align='center')
     ax.set_yticks(y_pos)
     ax.set_yticklabels(locations)
-    ax.invert_yaxis()  # labels read top-to-bottom
-    ax.set_xlabel('Avg price for m^2')
-    # Label with specially formatted floats
+    ax.invert_yaxis()
+    plt.title('Średnia cena wynajmu mieszkania za m^2 \n w zależności od dzielnicy')
+    ax.set_xlabel('Średnia cena za m^2 (PLN)')
+    ax.set_ylabel('Dzielnica Krakowa')
     ax.bar_label(hbars, fmt='%.2f')
-    ax.set_xlim(right=max(avg_price) + 2)  # adjust xlim to fit labels
+    ax.set_xlim(right=max(avg_price) + 10)
     plt.tight_layout()
     plt.savefig('static/images/plot_avg_price.png')
 
@@ -62,13 +63,15 @@ def plot_number_of_offers():
     performance = count_locations
     error = np.random.rand(len(locations))
     fig, ax = plt.subplots()
-    hbars = ax.barh(y_pos, performance, xerr=error, align='center')
+    hbars = ax.barh(y_pos, performance, xerr=error, align='center', color='green')
     ax.set_yticks(y_pos)
     ax.set_yticklabels(locations)
     ax.invert_yaxis()
-    ax.set_xlabel('Number of offers')
+    plt.title('Liczba ofert wynajmu mieszkania w zależności \n od dzielnicy ')
+    ax.set_xlabel('Liczba ofert')
+    ax.set_ylabel('Dzielnica Krakowa')
     ax.bar_label(hbars)
-    ax.set_xlim(right=max(count_locations) + 2)
+    ax.set_xlim(right=max(count_locations) + 50)
     plt.tight_layout()
     plt.savefig('static/images/plot_number_of_offers.png', dpi=300)
 
@@ -80,13 +83,18 @@ def historical_plot():
     date = []
     values1, values2, values3 = [], [], []
     for row in cursor.fetchall():
-        date.append(str(row[0]) + "/" + str(row[1]))
+        date.append(str(row[0])[2:4] + "/" + str(row[1]))
         values1.append(row[2]), values2.append(row[3]), values3.append(row[4])
+
     fig, ax = plt.subplots()
-    ax.plot(date, values1)
-    ax.plot(date, values2)
-    ax.plot(date, values3)
-    plt.xticks(np.arange(0, len(date) + 1, 7))
+    ax.plot(date, values1, label='0-38 m^2')
+    ax.plot(date, values2, label='38-60 m^2')
+    ax.plot(date, values3, label='60-90 m^2')
+    plt.title("Średnia cena wynajmu mieszkania za m^2 na przestrzeni \n czasu w zależności od jego powierzchni | 0-38 | 38-60 | 60-90 | m^2")
+    ax.set_xlabel('Data (rok/miesiąc)')
+    ax.set_ylabel('Średnia cena (PLN)')
+    ax.legend(frameon=True, framealpha=1, loc='center right')
+    plt.xticks(np.arange(0, len(date) + 1,3))
     plt.tight_layout()
     plt.savefig('static/images/plot_historical.png', bbox_inches='tight')
 
@@ -123,10 +131,10 @@ def plot_current_price(location):
         date.append(str(row[1]) + '/' +str(row[2]))
 
     fig, ax = plt.subplots()
-    ax.plot(date, price)
-    plt.title("Średnia cena za m^2 na przestrzeni czasu")
-    ax.set_xlabel("Data")
-    ax.set_ylabel("Średnia Cena za m^2 (PLN) ")
+    ax.plot(date, price, 'm')
+    plt.title("Średnia cena wynajmu mieszkania za m^2 na przestrzeni \n czasu w dzielnicy {}".format(location))
+    ax.set_xlabel("Data (rok/miesiąc)")
+    ax.set_ylabel("Średnia cena za m^2 (PLN)")
     plt.tight_layout()
     location = location.replace(' ', '_')
     plt.savefig('static/images/loc_price_{}.png'.format(location))
@@ -155,32 +163,34 @@ def plot_room_info_all():
         else:
             rooms.append(row[0])
     frequency = {}
-    options = [1, 2, 3, 4, 5, "6+"]
+    #options = [1, 2, 3, 4, "5+"]
+    options = ["5+", 4,3,2,1]
     for i in options:
         frequency[i] = 0
     for item in rooms:
-        if item < 6:
+        if item < 5:
             frequency[item] += 1
         else:
-            frequency["6+"] += 1
+            frequency["5+"] += 1
     y_pos = np.arange(len(frequency.keys()))
     performance = frequency.values()
     error = np.random.rand(len(frequency.values()))
     fig, ax = plt.subplots()
-    hbars = ax.barh(y_pos, performance, xerr=error, align='center')
+    hbars = ax.barh(y_pos, performance, xerr=error, align='center', color='orange')
     ax.set_yticks(y_pos)
     ax.set_yticklabels(frequency.keys())
     ax.invert_yaxis()
-    ax.set_xlabel('Liczba danych mieszkań')
-    ax.bar_label(hbars, fmt='%.2f')
-    ax.set_xlim(right=max(frequency.values()) + 2)
-    plt.ylabel("Liczba pokojów")
+    plt.title('Liczba ofert wynajmu mieszkania w zależności od liczby pokoi')
+    ax.set_xlabel('Liczba ofert')
+    ax.bar_label(hbars, fmt='%.0f')
+    ax.set_xlim(right=max(frequency.values()) + 100)
+    plt.ylabel("Liczba pokoi")
     plt.tight_layout()
     plt.savefig('static/images/rooms_info.png')
 
 
 plot_room_info_all()
 make_all_plot_price()
-plot_avg_price_fo_each_loc()
+plot_avg_price_for_each_loc()
 plot_number_of_offers()
 historical_plot()

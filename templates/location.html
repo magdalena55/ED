@@ -13,89 +13,101 @@
     </div>
 
     <div id="content">
-        <div class="title">
+
+        <div class="row">
+            <div class="title">
                 Informacje ogólne
-        </div>
-        <table>
-            <tr>
-                <td class="attribute">
-                    Liczba obecnych ofert:
-                </td>
-                <td class="data">
-                    {{ off }}
-                </td>
-            </tr>
+            </div>
 
-            <tr>
-                <td class="attribute">
-                    Procent wszystkich ofert w Krakowie:
-                </td>
-                <td class="data">
-                    {{ off_ratio }}%
-                </td>
-            </tr>
-        </table>
+            <table>
+                <tr>
+                    <td class="attribute">
+                        Liczba obecnych ofert:
+                    </td>
+                    <td class="data">
+                        {{ off }}
+                    </td>
+                </tr>
 
-        <div class="title">
-                Porównanie ceny za metr kwadratowy dla dzielnicy w stosunku do Krakowa
+                <tr>
+                    <td class="attribute">
+                        Procent wszystkich ofert w Krakowie:
+                    </td>
+                    <td class="data">
+                        {{ off_ratio }}%
+                    </td>
+                </tr>
+            </table>
         </div>
-        <table>
-              <tr>
-                  <th></th>
-                  <th> Q1 </th>
-                  <th> Średnia </th>
-                  <th> Mediana </th>
-                  <th> Q4 </th>
+
+        <div class="row">
+            <div class="title">
+                    Porównanie ceny za metr kwadratowy dla dzielnicy w stosunku do Krakowa
+            </div>
+            <table>
+                <tr>
+                    <th></th>
+                    <th> Q1 </th>
+                    <th> Średnia </th>
+                    <th> Mediana </th>
+                    <th> Q3 </th>
                 </tr>
                 <tr>
                     <td class="attribute">
-                             {{ loc }}
+                        {{ loc }}
                     </td>
-                <td class="data">
-                    {{ q1 }} PLN
-                </td>
-                <td class="data">
-                    {{ avg_ratio }} PLN
-                </td>
-                <td class="data">
-                    {{ med }} PLN
-                </td>
-                <td class="data">
-                    {{ q3 }} PLN
-                </td>
-            </tr>
-            <tr>
-                <td class="attribute">
-                    Kraków
-                </td>
-                <td class="data">
-                    {{ all_q1 }} PLN
-                </td>
-                <td class="data">
-                    {{ all_avg_price_ratio }} PLN
-                </td>
-                <td class="data">
-                    {{ all_med }}  PLN
-                </td>
-                <td class="data">
-                    {{ all_q3 }} PLN
-                </td>
-            </tr>
+                    <td class="data">
+                        {{ q1 }} PLN
+                    </td>
+                    <td class="data">
+                        {{ avg_ratio }} PLN
+                    </td>
+                    <td class="data">
+                        {{ med }} PLN
+                    </td>
+                    <td class="data">
+                        {{ q3 }} PLN
+                    </td>
+                </tr>
+                <tr>
+                    <td class="attribute">
+                        Kraków
+                    </td>
+                    <td class="data">
+                        {{ all_q1 }} PLN
+                    </td>
+                    <td class="data">
+                        {{ all_avg_price_ratio }} PLN
+                    </td>
+                    <td class="data">
+                        {{ all_med }}  PLN
+                    </td>
+                    <td class="data">
+                        {{ all_q3 }} PLN
+                    </td>
+                </tr>
 
-        </table>
+            </table>
+        </div>
 
-        <div class="title">
+        <div class="row">
+            <div class="title">
                 Wizualizacja danych
-        </div>
-        <div class="row">
-            <img src={{ boxplot }}>
-        </div>
-        <div class="row">
+            </div>
+
             <img src={{ price_plot }}>
-        </div>
-        <div class="row">
             <img src={{ room_plot }}>
         </div>
+
+        <div class="row">
+            <img id="box" src={{ boxplot }}>
+        </div>
+
+
+    </div>
+
+    <div id="footer" style="clear: both;">
+        2021
     </div>
 </div>
 

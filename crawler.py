@@ -38,10 +38,10 @@ def insert_new_data_to_rent_price_table():
         # pobieranie zawartości strony
         page = get(URL)
 
-        # do konstruktora obiektu bs przekazujemy kontent
+        # przekazanie zawartości strony do konstruktora bs
         bs = BeautifulSoup(page.content, 'html.parser')
 
-        # przechodzimy po wszystkich ofertach
+        # przejście po wszystkich ofertach
         for offer in bs.find_all('div', class_='css-1our9ed-offerBoxWrapper'):
             try:
                 location = offer.find('p', class_='css-unl6d4-PropertyLocation-ellipsis e1es8y4n4').get_text().strip().split(',')[1]

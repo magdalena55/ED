@@ -41,7 +41,7 @@ def estimate_cost():
         predicted = 100
     answer = "Przewidywana cena: {} PLN".format(round(*predicted, 2))
 
-    return render_template('main.html', locations=locations, predicted=answer, plot1='/static/images/plot_avg_price.png', plot2='/static/images/plot_number_of_offers.png', plot3='static/images/plot_historical.png')
+    return render_template('main.html', locations=locations, predicted=answer, plot1='/static/images/plot_avg_price.png', plot2='/static/images/plot_number_of_offers.png', plot3='static/images/plot_historical.png', plot4='static/images/rooms_info.png')
 
 
 @app.route('/dzielnica', methods=['POST'])
