@@ -82,6 +82,8 @@ def get_room_info(location):
 
 
 def plot_room_info(location):
+    date = str(datetime.date(datetime.now()))
+    date = date.split("-")
     frequency = get_room_info(location)
     y_pos = np.arange(len(frequency.keys()))
     performance = frequency.values()
@@ -94,7 +96,7 @@ def plot_room_info(location):
     ax.set_xlabel('Liczba ofert')
     ax.bar_label(hbars, fmt='%.0f')
     ax.set_xlim(right=max(frequency.values()) + 30)
-    ax.set_title('Liczba ofert wynajmu mieszkania w zależności od liczby pokoi')
+    ax.set_title('Liczba ofert wynajmu mieszkania w zależności od \n liczby pokoi w miesiącu {}/{}'.format(date[1],date[0]))
     plt.ylabel("Liczba pokoi")
     plt.tight_layout()
     location = location.replace(' ', '_')
